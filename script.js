@@ -5,18 +5,6 @@ container.appendChild(table);
 
 const inputs = [];
 
-// const EXAMPLE = [
-//   [null, 4, null, 5, null, 7, null, 6, null],
-//   [7, 5, null, null, null, null, null, 8, 1],
-//   [null, null, null, 2, null, 4, null, null, null],
-//   [3, null, 1, null, null, null, 5, null, 6],
-//   [null, null, null, null, null, null, null, null, null],
-//   [4, null, 9, null, null, null, 1, null, 3],
-//   [null, null, null, 1, null, 9, null, null, null],
-//   [6, 9, null, null, null, null, null, 1, 7],
-//   [null, 7, null, 4, null, 8, null, 2, null]
-// ]
-
 const EXAMPLE = [
   [null, null, 2, null, 5, null, null, null, null],
   [null, null, null, null, null, 9, 7, null, null],
@@ -28,32 +16,6 @@ const EXAMPLE = [
   [null, null, 1, 5, null, null, null, null, null],
   [null, null, null, null, 4, null, 8, null, null],
 ]
-
-function inputEventListener(event) {
-  const el = event.target;
-
-  if (/\D/.test(el.value) || !event.data) {
-    el.value = "";
-    return;
-  }
-
-  focusNext(el);
-}
-
-function focusNext(input) {
-  const index = +input.getAttribute('data-index');
-  const nextInput = document.querySelector(`[data-index="${index+1}"]`)
-
-  if (nextInput.readOnly) {
-    focusNext(nextInput);
-    return;
-  } else if (!nextInput) {
-    debugger
-    return;
-  }
-
-  nextInput.focus();
-}
 
 for (let i = 0; i < 9; i++) {
   const tr = document.createElement('tr');
@@ -67,7 +29,6 @@ for (let i = 0; i < 9; i++) {
     input.setAttribute('data-index', (j + 1) + (i * 9));
     input.value = EXAMPLE[i][j]; // TODO: remover
 
-    // if (EXAMPLE[i][j]) { input.readOnly = true; }
     input.addEventListener('input', inputEventListener);
 
     tr.appendChild(td);
@@ -185,4 +146,29 @@ function writeScenarioOnInputs(scenario) {
       input.value = scenario[i][j];
     }
   }
+}
+
+function inputEventListener(event) {
+  const el = event.target;
+
+  if (/\D/.test(el.value) || !event.data) {
+    el.value = "";
+    return;
+  }
+
+  focusNext(el);
+}
+
+function focusNext(input) {
+  const index = +input.getAttribute('data-index');
+  const nextInput = document.querySelector(`[data-index="${index+1}"]`)
+
+  if (nextInput.readOnly) {
+    focusNext(nextInput);
+    return;
+  } else if (!nextInput) {
+    return;
+  }
+
+  nextInput.focus();
 }
